@@ -1,6 +1,7 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +32,20 @@ public class Main {
             BufferedImage image;
             image = ImageIO.read(imin);
             frame.getGraphics().drawImage(image,0,0,300, 300, frame.getContentPane());
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep((long)(Math.random()*10000));
+                        frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+                    } catch (InterruptedException e) {
+                        frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            thread.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
